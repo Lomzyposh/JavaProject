@@ -1,0 +1,18 @@
+
+
+.root {
+    -fx-background-color: #9F8B59;
+}
+
+.button {
+    -fx-background-color: #2E0D14;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 6;
+}
+
+.text-field, .text-area, .date-picker {
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-background-radius: 5;
+}
