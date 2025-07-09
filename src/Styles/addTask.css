@@ -1,0 +1,28 @@
+.logoText{
+    -fx-font-size: 22px;
+    -fx-font-family: Impact;
+    -fx-text-fill:  #2E0D14;
+}
+
+.LogOutBtn{
+-fx-font-size: 13px;
+-fx-background-color: #2E0D14;
+-fx-text-fill: white;
+-fx-cursor: hand;
+}
+
+.body{
+-fx-background-color:#9F8B59;
+}
+
+.checkbox space{
+    -fx-background-color:white;
+    -fx-text-fill: white;
+}
+
+.add-btn{
+   -fx-font-size: 13px;
+   -fx-background-color: #2E0D14;
+   -fx-text-fill: white;
+   -fx-cursor: hand;
+}
