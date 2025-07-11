@@ -2,9 +2,11 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="body" stylesheets="@../../Styles/addTask.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allTasks.controller.allTasks">
     <HBox alignment="CENTER" prefHeight="66.0" prefWidth="600.0" spacing="150">
@@ -13,7 +15,18 @@
 
             <Label styleClass="logoText" text="TASK-NEST" />
             <Button alignment="CENTER" layoutX="10.0" layoutY="29.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="74.0" styleClass="LogOutBtn" text="See Tasks" />
-        </children>
+        </children> 
     </HBox>
-   <ListView fx:id="listView" layoutY="85.0" prefHeight="263.0" prefWidth="600.0" />
+    <HBox alignment="CENTER" layoutX="4.0" layoutY="118.0" prefHeight="28.0" prefWidth="266.0" spacing="10">
+        <Label styleClass="headerLabel" text="Title" />
+        <Region HBox.hgrow="ALWAYS" />
+        <Label styleClass="headerLabel" text="Status" />
+    </HBox>
+   <TableView fx:id="tableView" editable="true" layoutX="1.0" layoutY="94.0" prefHeight="253.0" prefWidth="600.0">
+     <columns>
+       <TableColumn prefWidth="265.3333332538605" text="Title" />
+       <TableColumn prefWidth="288.0000305175781" text="Status" />
+     </columns>
+   </TableView>
+
 </AnchorPane>
