@@ -32,10 +32,9 @@ public class signUpController implements Initializable {
     public Button fadeTop;
 
     public void goToLogin(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/LoginPage/view/login.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
+        Parent loginRoot = FXMLLoader.load(getClass().getResource("/LoginPage/view/login.fxml"));
+        Scene scene = ((Node) event.getSource()).getScene();
+        scene.setRoot(loginRoot);
     }
 
     @Override

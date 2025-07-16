@@ -124,10 +124,9 @@ public class loginController implements Initializable {
     }
 
     public void handleSignUp(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/SignUpPage/view/signup.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
-        stage.show();
+        Parent signUpRoot = FXMLLoader.load(getClass().getResource("/SignUpPage/view/signup.fxml"));
+        Scene scene = ((Node) event.getSource()).getScene();
+        scene.setRoot(signUpRoot);
     }
 
 
