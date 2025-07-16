@@ -16,8 +16,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import org.kordamp.ikonli.javafx.FontIcon;
-import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+
 
 import java.awt.event.ActionEvent;
 import java.io.IOException;
