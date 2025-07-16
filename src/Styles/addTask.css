@@ -40,6 +40,27 @@
 .headerLabel{
 -fx-font-size: 15px;
 }
-.datePicker{
+
+.actionBtn {
+    -fx-cursor: hand;
+    -fx-opacity: 0.4;
+}
+
+.actionBtn:hover{
+    -fx-opacity: 1.0;
+}
+
+.edit-icon {
+    -fx-fill: #4A90E2;
+}
+
+
+.delete-icon {
+    -fx-fill: #DC143C;
+}
+
+.tableView{
 
 }
+
+

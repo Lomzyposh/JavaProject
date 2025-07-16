@@ -1,32 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="body" stylesheets="@../../Styles/addTask.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allTasks.controller.allTasks">
-    <HBox alignment="CENTER" prefHeight="66.0" prefWidth="600.0" spacing="150">
+<AnchorPane styleClass="body" stylesheets="@../../Styles/addTask.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allTasks.controller.allTasks">
+
+    <!-- Top Bar -->
+    <HBox alignment="CENTER" spacing="150" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="16.0">
         <children>
-            <Button alignment="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="74.0" styleClass="LogOutBtn" text="LogOut" />
-
+            <Button alignment="CENTER" mnemonicParsing="false" styleClass="LogOutBtn" text="LogOut" />
             <Label styleClass="logoText" text="TASK-NEST" />
-            <Button alignment="CENTER" layoutX="10.0" layoutY="29.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="74.0" styleClass="LogOutBtn" text="See Tasks" />
-        </children> 
+            <Button alignment="CENTER" mnemonicParsing="false" onAction="#navigateToAddTask" styleClass="LogOutBtn" text="+ New Task" />
+        </children>
     </HBox>
-    <HBox alignment="CENTER" layoutX="4.0" layoutY="118.0" prefHeight="28.0" prefWidth="266.0" spacing="10">
-        <Label styleClass="headerLabel" text="Title" />
-        <Region HBox.hgrow="ALWAYS" />
-        <Label styleClass="headerLabel" text="Status" />
+
+    <!-- Filter ComboBox -->
+    <HBox alignment="CENTER_RIGHT" spacing="10" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="72.0">
+        <children>
+            <ComboBox fx:id="filterBtn" prefHeight="27.0" prefWidth="89.0" promptText="All" styleClass="filterBtn" />
+        </children>
     </HBox>
-   <TableView fx:id="tableView" editable="true" layoutX="1.0" layoutY="94.0" prefHeight="253.0" prefWidth="600.0">
-     <columns>
-       <TableColumn prefWidth="265.3333332538605" text="Title" />
-       <TableColumn prefWidth="288.0000305175781" text="Status" />
-     </columns>
-   </TableView>
+
+    <!-- TableView Container -->
+    <StackPane layoutX="-10.0" prefHeight="400.0" prefWidth="571.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="150.0">
+        <TableView fx:id="tableView" editable="true" styleClass="tableView">
+            <columns>
+                <TableColumn fx:id="markColumn" prefWidth="60.00000190734863" text="Mark">
+                    <styleClass>
+                        <String fx:value="Title" />
+                        <String fx:value="topLabel" />
+                    </styleClass>
+                </TableColumn>
+                <TableColumn fx:id="TitleColumn" prefWidth="161.33330535888672" text="Title">
+
+                    <styleClass>
+                        <String fx:value="Title" />
+                        <String fx:value="topLabel" />
+                    </styleClass>
+                </TableColumn>
+                <TableColumn fx:id="StatusColumn" prefWidth="88.66670227050781" text="Status">
+                    <styleClass>
+                        <String fx:value="Status" />
+                        <String fx:value="topLabel" />
+                    </styleClass>
+                </TableColumn>
+                <TableColumn prefWidth="104.66668701171875" text="Due Date">
+                    <styleClass>
+                        <String fx:value="Duedate" />
+                        <String fx:value="topLabel" />
+                    </styleClass>
+                </TableColumn>
+                <TableColumn fx:id="actionColumn" prefWidth="154.66665649414062" text="Actions">
+                    <styleClass>
+                        <String fx:value="topLabel" />
+                    </styleClass>
+                </TableColumn>
+            </columns>
+        </TableView>
+    </StackPane>
+
+
 
 </AnchorPane>

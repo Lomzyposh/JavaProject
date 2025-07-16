@@ -17,7 +17,7 @@
             <Button alignment="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="74.0" styleClass="LogOutBtn" text="LogOut" />
       
               <Label styleClass="logoText" text="TASK-NEST" />
-            <Button alignment="CENTER" layoutX="10.0" layoutY="29.0" mnemonicParsing="false" prefHeight="15.0" prefWidth="74.0" styleClass="LogOutBtn" text="See Tasks" />
+            <Button alignment="CENTER" layoutX="10.0" layoutY="29.0" mnemonicParsing="false" onAction="#navigateToAllTask" prefHeight="15.0" prefWidth="74.0" styleClass="LogOutBtn" text="See Tasks" />
          </children>
       </HBox>
       <VBox alignment="TOP_CENTER" prefHeight="280.0" prefWidth="560.0" spacing="8.0">
