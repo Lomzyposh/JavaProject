@@ -62,7 +62,7 @@
                 <PasswordField fx:id="confirmPasswordField" maxWidth="Infinity" promptText="Confirm Password" styleClass="input-field" />
 
                 <!-- Sign Up Button -->
-                <Button maxWidth="Infinity" styleClass="signup-btn" text="Sign Up" />
+                <Button maxWidth="Infinity" onAction="#submitForm" styleClass="signup-btn" text="Sign Up" />
 
                 <!-- Login Redirect -->
                 <HBox alignment="CENTER" spacing="5">
