@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@style.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label layoutX="234.0" layoutY="6.0" lineSpacing="10.0" prefHeight="58.0" prefWidth="111.0" styleClass="form-container" text="TASK-NEST" textAlignment="JUSTIFY">
+         <font>
+            <Font name="Impact" size="21.0" />
+         </font>
+      </Label>
+      <Button layoutX="18.0" layoutY="14.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="65.0" styleClass="form-elements" text="LogOut" />
+      <VBox layoutX="32.0" layoutY="90.0" prefHeight="278.0" prefWidth="514.0" spacing="10.0" styleClass="form-elements">
+         <children>
+            <Label styleClass="form-elements" text="Edit Task" textAlignment="JUSTIFY">
+               <font>
+                  <Font name="HP Simplified Bold Italic" size="14.0" />
+               </font>
+            </Label>
+            <TextField fx:id="titleField" prefHeight="42.0" prefWidth="450.0" promptText="Title" />
+            <TextArea fx:id="descriptionField" prefHeight="174.0" prefWidth="494.0" />
+            <DatePicker fx:id="butt" prefHeight="46.0" prefWidth="514.0" promptText="Edit Due Date" />
+            <HBox alignment="CENTER" prefHeight="67.0" prefWidth="370.0" spacing="10.0" styleClass="form-elements">
+               <children>
+                  <Button fx:id="cancelButton" mnemonicParsing="false" prefHeight="34.0" prefWidth="54.0" text="Cancel" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" prefHeight="39.0" prefWidth="54.0" text="Save" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

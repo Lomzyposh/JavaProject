@@ -3,24 +3,21 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.util.Objects;
-
-
-
 
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(
-                getClass().getResource("/allTasks/view/allTasks.fxml"));
-        Scene scene = new Scene(root);
-        stage.setTitle("WebView App");
-        stage.setScene(scene);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("./View/EditTaskForm.fxml"));
+        Parent root = loader.load();
+
+
+
+        stage.setScene(new Scene(root));
+        stage.setTitle("Edit Task - Test");
         stage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
-
     }
 }
