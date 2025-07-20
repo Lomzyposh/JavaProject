@@ -1,0 +1,66 @@
+.logoText{
+    -fx-font-size: 22px;
+    -fx-font-family: Impact;
+    -fx-text-fill:  #FFC744;
+}
+
+.LogOutBtn{
+-fx-font-size: 13px;
+-fx-background-color: #444444;
+-fx-text-fill: white;
+-fx-cursor: hand;
+}
+
+.body{
+-fx-background-color:#2B2B2B;
+}
+
+.checkbox space{
+    -fx-background-color:white;
+    -fx-text-fill: white;
+}
+
+.add-btn{
+   -fx-font-size: 13px;
+   -fx-background-color: #444444;
+   -fx-text-fill: white;
+   -fx-cursor: hand;
+}
+
+.text-field, .datePicker{
+-fx-background-color: transparent;
+-fx-border-color: #555;
+-fx-border-width: 0 0 1 0;
+-fx-text-fill: #ffffff;
+-fx-prompt-text-fill: #aaaaaa;
+-fx-font-size: 14px;
+-fx-padding: 5 10 5 5;
+}
+
+.headerLabel{
+-fx-font-size: 15px;
+}
+
+.actionBtn {
+    -fx-cursor: hand;
+    -fx-opacity: 0.4;
+}
+
+.actionBtn:hover{
+    -fx-opacity: 1.0;
+}
+
+.edit-icon {
+    -fx-fill: #4A90E2;
+}
+
+
+.delete-icon {
+    -fx-fill: #DC143C;
+}
+
+.tableView{
+
+}
+
+

@@ -51,7 +51,7 @@
                         <String fx:value="topLabel" />
                     </styleClass>
                 </TableColumn>
-                <TableColumn prefWidth="104.66668701171875" text="Due Date">
+                <TableColumn fx:id="dueDateColumn" prefWidth="104.66668701171875" text="Due Date">
                     <styleClass>
                         <String fx:value="Duedate" />
                         <String fx:value="topLabel" />

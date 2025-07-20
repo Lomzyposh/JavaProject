@@ -11,5 +11,15 @@
     <orderEntry type="library" name="ikonli-fontawesome5-pack-12.3.1" level="project" />
     <orderEntry type="library" name="ikonli-javafx-12.3.1" level="project" />
     <orderEntry type="library" name="ikonli-core-12.3.1" level="project" />
+    <orderEntry type="library" name="mssql-jdbc-12.8.1.jre11" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$USER_HOME$/Downloads/mssql-jdbc-12.8.1.jre11.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

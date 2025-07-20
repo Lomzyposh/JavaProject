@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" styleClass="body" stylesheets="@../../Styles/addTask.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="EditPage.controller.editpage">
+
+    <VBox alignment="TOP_CENTER" layoutX="20" layoutY="20" spacing="16" AnchorPane.bottomAnchor="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+
+        <!-- Header -->
+        <HBox alignment="CENTER" prefHeight="66.0" prefWidth="560.0" spacing="150">
+            <children>
+                <Button alignment="CENTER" mnemonicParsing="false" styleClass="LogOutBtn" text="LogOut" />
+                <Label styleClass="logoText" text="TASK-NEST" />
+                <Button alignment="CENTER" mnemonicParsing="false" styleClass="LogOutBtn" text="Cancel" />
+            </children>
+        </HBox>
+
+        <!-- Form Inputs -->
+        <VBox alignment="TOP_CENTER" prefHeight="280.0" prefWidth="560.0" spacing="8.0">
+            <children>
+                <TextField fx:id="taskInput" prefHeight="57.0" prefWidth="560.0" promptText="Title" styleClass="text-field" />
+                <TextField fx:id="descriptionInput" prefHeight="70.0" prefWidth="560.0" promptText="Description" styleClass="text-field" />
+                <DatePicker fx:id="dueDatePicker" prefHeight="43.0" prefWidth="495.0" promptText="Select Due Date" styleClass="datePicker" />
+                <Button onAction="#handleSave" prefHeight="34.0" prefWidth="174.0" styleClass="add-btn" text="Save Changes" />
+            </children>
+        </VBox>
+
+        <VBox /> <!-- empty spacing -->
+
+    </VBox>
+</AnchorPane>

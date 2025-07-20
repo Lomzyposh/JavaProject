@@ -15,7 +15,7 @@
       <HBox alignment="CENTER" prefHeight="66.0" prefWidth="560.0" spacing="150">
          <children>
             <Button alignment="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="74.0" styleClass="LogOutBtn" text="LogOut" />
-      
+
               <Label styleClass="logoText" text="TASK-NEST" />
             <Button alignment="CENTER" layoutX="10.0" layoutY="29.0" mnemonicParsing="false" onAction="#navigateToAllTask" prefHeight="15.0" prefWidth="74.0" styleClass="LogOutBtn" text="See Tasks" />
          </children>
@@ -23,12 +23,13 @@
       <VBox alignment="TOP_CENTER" prefHeight="280.0" prefWidth="560.0" spacing="8.0">
          <children>
             <Text layoutX="10.0" layoutY="97.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass=".desc-text" />
-      
+
               <HBox alignment="CENTER" prefHeight="49.0" prefWidth="560.0" spacing="12">
                   <TextField fx:id="taskInput" prefHeight="57.0" prefWidth="560.0" promptText="Title" styleClass="text-field" HBox.hgrow="ALWAYS" />
               </HBox>
-            <TextField prefHeight="70.0" prefWidth="560.0" promptText="Description (Optional)" styleClass="text-field" />
-            <DatePicker prefHeight="43.0" prefWidth="495.0" promptText="Select Due Date" styleClass="datePicker" />
+             <TextField fx:id="descriptionInput" prefHeight="70.0" prefWidth="560.0" promptText="Description (Optional)" styleClass="text-field" />
+
+             <DatePicker fx:id="dueDatePicker" prefHeight="43.0" prefWidth="495.0" promptText="Select Due Date" styleClass="datePicker" />
                <Button onAction="#handleAddTask" prefHeight="34.0" prefWidth="174.0" styleClass="add-btn" text="Add" />
          </children>
       </VBox>
