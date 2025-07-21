@@ -1,0 +1,56 @@
+.main-background {
+    -fx-background-color: #2B2B2B;
+    -fx-font-family: "Poppins", Arial
+}
+
+.buttonTop {
+    -fx-background-color: #444444;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 14px;
+    -fx-padding: 4 10;
+    -fx-cursor: hand;
+}
+
+
+.buttonTop:hover{
+    -fx-background-color: rgba(255, 255, 255, 0.7);
+    -fx-text-fill: black;
+}
+.headerLogo{
+    -fx-text-fill: #FFC744;
+}
+
+.logo{
+    -fx-text-fill:  #03A9F4;
+    -fx-font-size: 30px;
+}
+
+.text-field, .password-field {
+    -fx-background-color: transparent;
+    -fx-border-color: #555;
+    -fx-border-width: 0 0 1 0;
+    -fx-text-fill: #ffffff;
+    -fx-prompt-text-fill: #aaaaaa;
+    -fx-font-size: 14px;
+    -fx-padding: 5 10 5 5;
+}
+
+.check-box {
+    -fx-text-fill: #cccccc;
+    -fx-font-size: 13px;
+}
+
+.login-button, .signup-btn{
+    -fx-background-color: #444444;
+    -fx-text-fill: white;
+    -fx-background-radius: 5;
+    -fx-font-size: 14px;
+    -fx-padding: 4 10;
+    -fx-cursor: hand;
+}
+
+.backToPreview {
+    -fx-background-color: #333;
+    -fx-text-fill: white;
+}
