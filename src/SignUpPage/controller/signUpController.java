@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -22,13 +23,12 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ResourceBundle;
 
 public class signUpController implements Initializable {
+
+//    Calling by Ids
 
     @FXML
     public VBox signUpForm;
@@ -38,18 +38,30 @@ public class signUpController implements Initializable {
     public Button fadeTop;
 
     @FXML
-    public TextField usernameField;
-    @FXML
     public PasswordField passwordField;
     @FXML
     public PasswordField confirmPasswordField;
+    @FXML
+    public TextField usernameField;
 
+
+    //    Show Alert Method
+    public void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Notification");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    //    Go to Login Page
     public void goToLogin(ActionEvent event) throws IOException {
         Parent loginRoot = FXMLLoader.load(getClass().getResource("/LoginPage/view/login.fxml"));
         Scene scene = ((Node) event.getSource()).getScene();
         scene.setRoot(loginRoot);
     }
 
+    //    Animation for the Sign-Up Page
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -84,7 +96,7 @@ public class signUpController implements Initializable {
         });
     }
 
-
+    //    Once u click the Sign-Up Button, it will submit this
     @FXML
     public void submitForm() {
 
@@ -92,6 +104,7 @@ public class signUpController implements Initializable {
         String userInput = usernameField.getText();
         String userPassword = passwordField.getText();
         String confirmPassword = confirmPasswordField.getText();
+
 
 //        Connect to the database
         try {
@@ -102,6 +115,42 @@ public class signUpController implements Initializable {
 
             Connection conn = DriverManager.getConnection(url, user, pass);
 
+//            Check if empty
+            if (userInput.isEmpty() || userPassword.isEmpty() || confirmPassword.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Please fill in all fields.");
+                return;
+//                1293926743
+            }
+
+            if (userPassword.length() < 6 || userPassword.length() > 20) {
+                showAlert(Alert.AlertType.WARNING, "Password must be between 6 and 20 characters.");
+                return;
+            }
+
+            if (!userPassword.equals(confirmPassword)) {
+                showAlert(Alert.AlertType.ERROR, "Passwords do not match.");
+                return;
+            }
+            if (userInput.length() < 3 || userInput.length() > 20) {
+                showAlert(Alert.AlertType.WARNING, "Username must be between 3 and 20 characters.");
+                return;
+            }
+
+
+
+//            Code to check if the username already exists
+            String checkQuery = "SELECT COUNT(*) FROM users WHERE username = ?";
+            PreparedStatement checkStatement = conn.prepareStatement(checkQuery);
+            checkStatement.setString(1, userInput);
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (resultSet.next() && resultSet.getInt(1) > 0) {
+                System.out.println("Username already exists. Please choose a different username.");
+                showAlert(Alert.AlertType.WARNING, "Username already exists. Please choose a different username.");
+                return;
+            }
+
+//            Insert the user into the database
             String query = "INSERT INTO users (username, password) VALUES (?,?)";
 
             PreparedStatement preparedStatement = conn.prepareStatement(query);
@@ -112,8 +161,11 @@ public class signUpController implements Initializable {
 
             Boolean rs = preparedStatement.execute();
             System.out.println("Success");
+            showAlert(Alert.AlertType.INFORMATION, "Registration successful! You can now log in.");
 
-        } catch (ClassNotFoundException | SQLException e) {
+            goToLogin(new ActionEvent());
+
+        } catch (ClassNotFoundException | SQLException | IOException e) {
             System.out.println(e.getMessage());
         }
     }

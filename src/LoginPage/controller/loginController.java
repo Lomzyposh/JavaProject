@@ -18,6 +18,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -36,6 +37,14 @@ public class loginController implements Initializable {
     public Hyperlink forgotLink;
     @FXML
     public AnchorPane rootPane;
+
+    public void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Notification");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -80,46 +89,42 @@ public class loginController implements Initializable {
     }
 
 
-    public void showInfoAlert() {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("Login Info");
-        alert.setHeaderText("Login Successful");
-        alert.setContentText("Welcome back to Tasky!");
-        alert.showAndWait();
-    }
-
-
-    public void showErrorAlert(String errorMsg) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Login Failed");
-        alert.setHeaderText("Something went wrong");
-        alert.setContentText(errorMsg);
-        alert.showAndWait();
-    }
-
-
-    public boolean showConfirmation(String message) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle("Confirm");
-        alert.setHeaderText("Are you sure?");
-        alert.setContentText(message);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        return result.isPresent() && result.get() == ButtonType.OK;
-    }
-
     @FXML
     private void handleLogin() {
-        String user = usernameField.getText();
-        String pass = passwordField.getText();
+        String userInput= usernameField.getText();
+        String passInput = passwordField.getText();
 
-        if (user.isEmpty() || pass.isEmpty()) {
-            showErrorAlert("Username or Password cannot be empty.");
-        } else if (user.equals("admin") && pass.equals("1234")) {
-            showInfoAlert();
-        } else {
-            showErrorAlert("Invalid credentials. Try again.");
+        try {
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            String user = "sa2";
+            String pass = "00000000";
+            String url = "jdbc:sqlserver://localhost:1433;databaseName=To_DO_App;encrypt=true;trustServerCertificate=true";
+
+            Connection conn = DriverManager.getConnection(url, user, pass);
+
+            if (userInput.isEmpty() || passInput.isEmpty()) {
+                showAlert(Alert.AlertType.ERROR, "Username and Password cannot be empty.");
+                return;
+            }
+
+            String checkQuery = "SELECT * FROM users WHERE username = ? AND password = ?";
+            PreparedStatement checkStatement = conn.prepareStatement(checkQuery);
+            checkStatement.setString(1, userInput);
+            checkStatement.setString(2, passInput);
+            ResultSet resultSet = checkStatement.executeQuery();
+
+            if (resultSet.next()) {
+                System.out.println("Login successful!");
+                showAlert(Alert.AlertType.INFORMATION, "Login successful!");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Invalid Username or Password.");
+            }
+
+
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e.getMessage());
         }
+
 
     }
 
