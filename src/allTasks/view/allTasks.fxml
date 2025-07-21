@@ -32,32 +32,32 @@
     <StackPane layoutX="-10.0" prefHeight="400.0" prefWidth="571.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="150.0">
         <TableView fx:id="tableView" editable="true" styleClass="tableView">
             <columns>
-                <TableColumn fx:id="markColumn" prefWidth="60.00000190734863" text="Mark">
+                <TableColumn fx:id="markColumn" text="Mark">
                     <styleClass>
                         <String fx:value="Title" />
                         <String fx:value="topLabel" />
                     </styleClass>
                 </TableColumn>
-                <TableColumn fx:id="TitleColumn" prefWidth="161.33330535888672" text="Title">
+                <TableColumn fx:id="TitleColumn" text="Title">
 
                     <styleClass>
                         <String fx:value="Title" />
                         <String fx:value="topLabel" />
                     </styleClass>
                 </TableColumn>
-                <TableColumn fx:id="StatusColumn" prefWidth="88.66670227050781" text="Status">
+                <TableColumn fx:id="StatusColumn" text="Status">
                     <styleClass>
                         <String fx:value="Status" />
                         <String fx:value="topLabel" />
                     </styleClass>
                 </TableColumn>
-                <TableColumn fx:id="dueDateColumn" prefWidth="104.66668701171875" text="Due Date">
+                <TableColumn fx:id="dueDateColumn" text="Due Date">
                     <styleClass>
                         <String fx:value="Duedate" />
                         <String fx:value="topLabel" />
                     </styleClass>
                 </TableColumn>
-                <TableColumn fx:id="actionColumn" prefWidth="154.66665649414062" text="Actions">
+                <TableColumn fx:id="actionColumn" text="Actions">
                     <styleClass>
                         <String fx:value="topLabel" />
                     </styleClass>

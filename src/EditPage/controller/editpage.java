@@ -15,9 +15,12 @@ import java.time.LocalDate;
 
 public class editpage {
 
-    @FXML private TextField taskInput;
-    @FXML private TextField descriptionInput;
-    @FXML private DatePicker dueDatePicker;
+    @FXML
+    private TextField taskInput;
+    @FXML
+    private TextField descriptionInput;
+    @FXML
+    private DatePicker dueDatePicker;
 
     private int taskId;
 
@@ -35,14 +38,14 @@ public class editpage {
         LocalDate dueDate = dueDatePicker.getValue();
 
         if (taskTitle.isEmpty() || description.isEmpty() || dueDate == null) {
-            showAlert("Please fill in all required fields.");
+            showAlert(Alert.AlertType.WARNING, "Please fill in all required fields.");
             return;
         }
 
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             String url = "jdbc:sqlserver://localhost:1433;databaseName=To_DO_App;trustServerCertificate=true";
-            String user = "sa2", pass = "123456";
+            String user = "sa2", pass = "00000000";
             Connection conn = DriverManager.getConnection(url, user, pass);
             String query = "UPDATE tasks SET title = ?, description = ?, dueDate = ? WHERE taskId = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
@@ -54,7 +57,7 @@ public class editpage {
             conn.close();
             navigateToAllTasks(event);
         } catch (Exception e) {
-            showAlert("❌ Failed to update task: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "❌ Failed to update task: ");
         }
     }
 
@@ -69,8 +72,9 @@ public class editpage {
         scene.setRoot(root);
     }
 
-    private void showAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+    public void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Notification");
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();

@@ -8,10 +8,7 @@
     <orderEntry type="jdk" jdkName="24" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="library" name="ikonli-fontawesome5-pack-12.3.1" level="project" />
-    <orderEntry type="library" name="ikonli-javafx-12.3.1" level="project" />
-    <orderEntry type="library" name="ikonli-core-12.3.1" level="project" />
-    <orderEntry type="library" name="mssql-jdbc-12.8.1.jre11" level="project" />
+    <orderEntry type="library" exported="" name="mssql-jdbc-12.8.1.jre11" level="project" />
     <orderEntry type="module-library">
       <library>
         <CLASSES>
@@ -21,5 +18,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="mssql-jdbc-12.10.0.jre11" level="project" />
   </component>
 </module>

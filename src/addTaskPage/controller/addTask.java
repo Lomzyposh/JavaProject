@@ -101,6 +101,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 
@@ -116,6 +117,14 @@ public class addTask {
     @FXML private TextField taskInput;
     @FXML private TextField descriptionInput;
     @FXML private DatePicker dueDatePicker;
+
+    public void showAlert(Alert.AlertType type, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle("Notification");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     // Redirect to All Tasks page
     @FXML
@@ -134,12 +143,13 @@ public class addTask {
 
         if (title.isEmpty() || dueDate == null) {
             System.out.println("⚠️ Title and Due Date are required.");
+            showAlert(Alert.AlertType.WARNING, "⚠️ Please fill in all required fields.");
             return;
         }
 
         try {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            String user = "sa2", pass = "123456";
+            String user = "sa2", pass = "00000000";
             String url = "jdbc:sqlserver://localhost:1433;databaseName=To_DO_App;trustServerCertificate=true";
 
             Connection conn = DriverManager.getConnection(url, user, pass);
@@ -153,12 +163,14 @@ public class addTask {
 
             stmt.executeUpdate();
             System.out.println("✅ Task successfully added to database.");
+            showAlert(Alert.AlertType.INFORMATION, "✅ Task successfully added!");
 
-            // Optionally navigate back
             navigateToAllTask(event);
 
         } catch (ClassNotFoundException | SQLException | IOException e) {
             System.out.println("❌ Error adding task: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "❌ Failed to add task: ");
         }
     }
+
 }

@@ -24,53 +24,54 @@ import java.util.Objects;
 
 public class allTasks {
 
-    @FXML private TableView<ToDoItem> tableView;
-    @FXML private TableColumn<ToDoItem, String> TitleColumn;
-    @FXML private TableColumn<ToDoItem, String> StatusColumn;
-    @FXML private TableColumn<ToDoItem, String> dueDateColumn;
-    @FXML private TableColumn<ToDoItem, Void> actionColumn;
-    @FXML private ComboBox<String> filterBtn;
-    @FXML public TableColumn<ToDoItem, Boolean> markColumn;
+    @FXML
+    private TableView<ToDoItem> tableView;
+    @FXML
+    private TableColumn<ToDoItem, String> TitleColumn;
+    @FXML
+    private TableColumn<ToDoItem, String> StatusColumn;
+    @FXML
+    private TableColumn<ToDoItem, String> dueDateColumn;
+    @FXML
+    private TableColumn<ToDoItem, Void> actionColumn;
+    @FXML
+    private ComboBox<String> filterBtn;
+    @FXML
+    public TableColumn<ToDoItem, Boolean> markColumn;
 
     private final ObservableList<ToDoItem> taskList = FXCollections.observableArrayList();
 
     private Connection connectDB() throws SQLException, ClassNotFoundException {
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=To_DO_App;trustServerCertificate=true";
-        String user = "sa2", pass = "123456";
+        String user = "sa2", pass = "00000000",
+                url = "jdbc:sqlserver://localhost:1433;databaseName=TO_DO_App;encrypt=true;trustServerCertificate=true";
         return DriverManager.getConnection(url, user, pass);
     }
 
     @FXML
     public void initialize() {
+        tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         TitleColumn.setCellValueFactory(new PropertyValueFactory<>("task"));
         StatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         markColumn.setCellValueFactory(cellData -> cellData.getValue().markedProperty());
 
-        markColumn.setCellFactory(column -> new CheckBoxTableCell<>() {
-            private final CheckBox checkBox = new CheckBox();
-
-            @Override
-            public void updateItem(Boolean item, boolean empty) {
-                super.updateItem(item, empty);
-                if (!empty) {
-                    ToDoItem task = getTableView().getItems().get(getIndex());
-                    checkBox.setSelected(task.isMarked());
-
-                    checkBox.selectedProperty().addListener((obs, wasSelected, isSelected) -> {
-                        task.setMarked(isSelected);
-                        task.setStatus(isSelected ? "Completed" : "Pending");
-                        updateTaskMarkedInDB(task.getId(), isSelected);
-                        loadTasksFromDB(); // ✅ Refreshes table status immediately
-                    });
-
-                    setGraphic(checkBox);
-                    setContentDisplay(ContentDisplay.GRAPHIC_ONLY);
-                } else {
-                    setGraphic(null);
-                }
-            }
+        markColumn.setCellFactory(tc -> {
+            CheckBoxTableCell<ToDoItem, Boolean> cell = new CheckBoxTableCell<>(index -> {
+                BooleanProperty prop = tableView.getItems().get(index).markedProperty();
+                prop.removeListener((obs, oldVal, newVal) -> {
+                });
+                prop.addListener((obs, wasMarked, isNowMarked) -> {
+                    ToDoItem item = tableView.getItems().get(index);
+                    item.setStatus(isNowMarked ? "Completed" : "Pending");
+                    filterTasks(isNowMarked ? "Completed" : "Pending");
+                    updateTaskMarkedInDB(item.getId(), isNowMarked);
+                    tableView.refresh();
+                });
+                return prop;
+            });
+            cell.setAlignment(Pos.CENTER);
+            return cell;
         });
 
         filterBtn.setItems(FXCollections.observableArrayList("All", "Pending", "Completed", "Overdue"));
@@ -110,6 +111,23 @@ public class allTasks {
                 taskList.add(task);
             }
             tableView.setItems(taskList);
+
+            tableView.setRowFactory(tv -> new TableRow<>() {
+                @Override
+                protected void updateItem(ToDoItem item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) {
+                        setStyle(""); // Default style
+                    } else {
+                        if ("Completed".equalsIgnoreCase(item.getStatus())) {
+                            setStyle("-fx-background-color: #d4edda;");
+                        } else {
+                            setStyle("");
+                        }
+                    }
+                }
+            });
+
         } catch (Exception e) {
             System.out.println("❌ Failed to load tasks: " + e.getMessage());
         }
@@ -117,14 +135,13 @@ public class allTasks {
 
     private void filterTasks(String filter) {
         ObservableList<ToDoItem> filtered = FXCollections.observableArrayList();
-        LocalDate today = LocalDate.now();
         for (ToDoItem task : taskList) {
             switch (filter) {
                 case "Completed" -> {
                     if (task.getStatus().equalsIgnoreCase("Completed")) filtered.add(task);
                 }
                 case "Pending" -> {
-                    if (task.getStatus().equalsIgnoreCase("Pending") && !isOverdue(task)) filtered.add(task);
+                    if (task.getStatus().equalsIgnoreCase("Pending")) filtered.add(task);
                 }
                 case "Overdue" -> {
                     if (isOverdue(task) && task.getStatus().equalsIgnoreCase("Pending")) filtered.add(task);
@@ -134,6 +151,7 @@ public class allTasks {
         }
         tableView.setItems(filtered);
     }
+
 
     private boolean isOverdue(ToDoItem task) {
         try {
@@ -152,6 +170,11 @@ public class allTasks {
 
             {
                 container.setAlignment(Pos.CENTER);
+                editIcon.setCursor(javafx.scene.Cursor.HAND);
+                editIcon.setTooltip(new Tooltip("Edit Task"));
+                deleteIcon.setTooltip(new Tooltip("Delete Task"));
+                deleteIcon.setCursor(javafx.scene.Cursor.HAND);
+
                 deleteIcon.setOnMouseClicked(e -> {
                     ToDoItem task = getTableView().getItems().get(getIndex());
                     deleteTask(task);
@@ -225,17 +248,52 @@ public class allTasks {
             this.dueDate.set(dueDate);
         }
 
-        public int getId() { return id; }
-        public String getTask() { return task.get(); }
-        public void setTask(String value) { task.set(value); }
-        public String getStatus() { return status.get(); }
-        public void setStatus(String value) { status.set(value); }
-        public String getDescription() { return description.get(); }
-        public void setDescription(String value) { description.set(value); }
-        public String getDueDate() { return dueDate.get(); }
-        public void setDueDate(String value) { dueDate.set(value); }
-        public boolean isMarked() { return marked.get(); }
-        public void setMarked(boolean value) { marked.set(value); }
-        public BooleanProperty markedProperty() { return marked; }
+        public int getId() {
+            return id;
+        }
+
+        public String getTask() {
+            return task.get();
+        }
+
+        public void setTask(String value) {
+            task.set(value);
+        }
+
+        public String getStatus() {
+            return status.get();
+        }
+
+        public void setStatus(String value) {
+            status.set(value);
+        }
+
+        public String getDescription() {
+            return description.get();
+        }
+
+        public void setDescription(String value) {
+            description.set(value);
+        }
+
+        public String getDueDate() {
+            return dueDate.get();
+        }
+
+        public void setDueDate(String value) {
+            dueDate.set(value);
+        }
+
+        public boolean isMarked() {
+            return marked.get();
+        }
+
+        public void setMarked(boolean value) {
+            marked.set(value);
+        }
+
+        public BooleanProperty markedProperty() {
+            return marked;
+        }
     }
 }
