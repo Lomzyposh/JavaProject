@@ -1,5 +1,6 @@
 package SignUpPage.controller;
 
+import allTasks.controller.allTasks;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -61,6 +62,32 @@ public class signUpController implements Initializable {
         scene.setRoot(loginRoot);
     }
 
+    @FXML
+    public void continueAsGuest(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/allTasks/view/allTasks.fxml"));
+            Parent allTasksRoot = loader.load();
+            allTasks controller = loader.getController();
+            controller.setUserId(0);
+            Scene scene = ((Node) event.getSource()).getScene();
+            scene.setRoot(allTasksRoot);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Failed to load All Tasks page.");
+            e.printStackTrace();
+            return;
+        }
+    }
+
+    @FXML
+    public void navigateToPreview(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/landingPage/view/landingPage.fxml"));
+        Parent LandingPage = loader.load();
+
+        Scene scene = ((Node) event.getSource()).getScene();
+        scene.setRoot(LandingPage);
+    }
+
+
     //    Animation for the Sign-Up Page
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -98,7 +125,7 @@ public class signUpController implements Initializable {
 
     //    Once u click the Sign-Up Button, it will submit this
     @FXML
-    public void submitForm() {
+    public void submitForm(ActionEvent event) {
 
 //        Get Users Values
         String userInput = usernameField.getText();
@@ -137,7 +164,6 @@ public class signUpController implements Initializable {
             }
 
 
-
 //            Code to check if the username already exists
             String checkQuery = "SELECT COUNT(*) FROM users WHERE username = ?";
             PreparedStatement checkStatement = conn.prepareStatement(checkQuery);
@@ -163,7 +189,7 @@ public class signUpController implements Initializable {
             System.out.println("Success");
             showAlert(Alert.AlertType.INFORMATION, "Registration successful! You can now log in.");
 
-            goToLogin(new ActionEvent());
+            goToLogin(event);
 
         } catch (ClassNotFoundException | SQLException | IOException e) {
             System.out.println(e.getMessage());

@@ -15,17 +15,18 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane fx:id="rootPane" prefHeight="570.0" prefWidth="580.0" styleClass="main-background" stylesheets="@../../styles/styles.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SignUpPage.controller.signUpController">
+<AnchorPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0" styleClass="body" stylesheets="@../../Styles/addTask.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SignUpPage.controller.signUpController">
 
     <children>
 
-        <HBox alignment="CENTER" spacing="190" styleClass="fadeTop" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="16.0">
+        <HBox layoutX="20.0" layoutY="62.0" spacing="190" styleClass="fadeTop" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="62.0">
             <children>
-                <Button fx:id="fadeTop" mnemonicParsing="false" text="← Back To Preview">
+                <Button fx:id="fadeTop" mnemonicParsing="false" onAction="#navigateToPreview" text="← Back To Preview">
                     <styleClass>
                         <String fx:value="backToPreview" />
                         <String fx:value="buttonTop" />
                         <String fx:value="topFade" />
+                  <String fx:value="topBtn" />
                     </styleClass>
                     <cursor>
                         <Cursor fx:constant="HAND" />
@@ -36,42 +37,62 @@
 
 
         <!-- Centered Sign-Up Form -->
-        <StackPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="60.0">
+        <StackPane layoutY="100.0" AnchorPane.bottomAnchor="-20.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
 
-            <VBox fx:id="signUpForm" alignment="CENTER" maxWidth="400" spacing="20" styleClass="signup-container">
+               <VBox fx:id="signUpForm" alignment="CENTER" maxWidth="400" prefWidth="400.0" spacing="20" styleClass="signup-container">
 
-                <!-- Logo -->
+                   <!-- Logo -->
                 <HBox alignment="CENTER" spacing="10">
                     <children>
-                        <ImageView fx:id="logoImage" fitHeight="30.0" fitWidth="30.0" preserveRatio="true">
-                            <image>
-                                <Image url="@../../Images/logoTop.jpg" />
-                            </image>
-                        </ImageView>
-                        <Label styleClass="headerLogo" text="TaskNest" textFill="#FFC744">
-                            <font>
-                                <Font name="Impact" size="26.0" />
-                            </font>
-                        </Label>
+                        <VBox alignment="CENTER" spacing="5">
+                            <children>
+                                <ImageView fitHeight="50.0" fitWidth="50.0" preserveRatio="true">
+                                    <image>
+                                        <Image url="@../../Images/cactus2.png" />
+                                    </image>
+                                </ImageView>
+                                <Label styleClass="logoText" text="TASK 🌵 NEST" />
+                            </children>
+                        </VBox>
                     </children>
                 </HBox>
 
-                <!-- Input Fields -->
+                   <!-- Input Fields -->
                 <TextField fx:id="usernameField" maxWidth="Infinity" promptText="Username" styleClass="input-field" />
                 <PasswordField fx:id="passwordField" maxWidth="Infinity" promptText="Password" styleClass="input-field" />
                 <PasswordField fx:id="confirmPasswordField" maxWidth="Infinity" promptText="Confirm Password" styleClass="input-field" />
 
-                <!-- Sign Up Button -->
-                <Button maxWidth="Infinity" onAction="#submitForm" styleClass="signup-btn" text="Sign Up" />
+                   <!-- Sign Up Button -->
+                <Button maxWidth="Infinity" onAction="#submitForm" text="Sign Up">
+               <styleClass>
+                  <String fx:value="signup-btn" />
+                  <String fx:value="topBtn" />
+               </styleClass>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
 
-                <!-- Login Redirect -->
+                   <!-- Login Redirect -->
                 <HBox alignment="CENTER" spacing="5">
-                    <Label text="Already have an account?" textFill="white" />
-                    <Hyperlink onAction="#goToLogin" styleClass="link-btn" text="Login" />
+                    <Label text="Already have an account?" textFill="#100f0f">
+                  <font>
+                     <Font size="14.0" />
+                  </font>
+               </Label>
+                    <Hyperlink onAction="#goToLogin" styleClass="link-btn" text="Login" textFill="#73a65a">
+                  <font>
+                     <Font size="15.0" />
+                  </font>
+               </Hyperlink>
                 </HBox>
-                <Hyperlink text="Continue as Guest →" />
+                <Hyperlink onAction="#continueAsGuest" text="Sign in as a Guest →">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Hyperlink>
 
-            </VBox>
+               </VBox>
         </StackPane>
 
     </children>

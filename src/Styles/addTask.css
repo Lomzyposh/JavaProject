@@ -1,40 +1,61 @@
-.logoText{
-    -fx-font-size: 22px;
-    -fx-font-family: Impact;
-    -fx-text-fill:  #FFC744;
+.body {
+    -fx-background-color: linear-gradient(to bottom, #f4fdf7, #dff8ec);
 }
 
-.LogOutBtn{
--fx-font-size: 13px;
--fx-background-color: #444444;
--fx-text-fill: white;
--fx-cursor: hand;
+.topBtn {
+    -fx-background-color: #2a7f3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+    -fx-background-radius: 10;
 }
 
-.body{
--fx-background-color:#2B2B2B;
+.topBtn:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 6, 0, 0, 3);
 }
 
+.logOutBtn{
+-fx-background-color: #FF7F7F;
+}
+.logoText {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2a7f3c;
+}
+.filterBtn {
+    -fx-background-radius: 15;
+    -fx-font-size: 14px;
+}
 .checkbox space{
     -fx-background-color:white;
     -fx-text-fill: white;
 }
 
-.add-btn{
-   -fx-font-size: 13px;
-   -fx-background-color: #444444;
-   -fx-text-fill: white;
-   -fx-cursor: hand;
+/* Save Button */
+.add-btn {
+    -fx-background-color: #2a7f3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 10;
+    -fx-padding: 10 20;
+    -fx-cursor: hand;
 }
 
-.text-field, .datePicker{
--fx-background-color: transparent;
--fx-border-color: #555;
--fx-border-width: 0 0 1 0;
--fx-text-fill: #ffffff;
--fx-prompt-text-fill: #aaaaaa;
--fx-font-size: 14px;
--fx-padding: 5 10 5 5;
+.add-btn:hover {
+    -fx-background-color: #256b34;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.text-field{
+     -fx-padding: 20;
+}
+
+.datePicker {
+    -fx-background-radius: 8;
+    -fx-font-size: 14px;
 }
 
 .headerLabel{

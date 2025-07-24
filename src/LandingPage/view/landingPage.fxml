@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane fx:id="rootPane" prefHeight="700.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LandingPage.controller.landingPage">
+    <VBox alignment="CENTER" prefHeight="800.0" prefWidth="600" spacing="20" styleClass="main-background" stylesheets="@../../Styles/landingPage.css" AnchorPane.bottomAnchor="0" AnchorPane.leftAnchor="0" AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0.0">
+
+        <ImageView fx:id="taskyImage" fitHeight="200" fitWidth="200">
+            <image>
+                <Image url="@../../Images/cactusWave.gif" />
+            </image>
+        </ImageView>
+
+        <Label style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #2a7f3c;" styleClass="topText" text="🌵 Meet Tasky the Cactus!" />
+
+        <Label maxWidth="400" style="-fx-font-size: 16px; -fx-text-fill: #333333;" text="He doesn’t need water, but he’ll keep your tasks fresh and organized!" textAlignment="CENTER" wrapText="true" />
+
+        <Button onAction="#goToLoginPage" styleClass="startedBtn" text="Get Started">
+            <cursor>
+                <Cursor fx:constant="HAND" />
+            </cursor>
+        </Button>
+
+    </VBox>
+</AnchorPane>

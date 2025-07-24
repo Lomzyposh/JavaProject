@@ -1,71 +1,119 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.lang.String?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane styleClass="body" stylesheets="@../../Styles/addTask.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allTasks.controller.allTasks">
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" styleClass="body" stylesheets="@../../Styles/addTask.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="allTasks.controller.allTasks">
 
-    <!-- Top Bar -->
-    <HBox alignment="CENTER" spacing="150" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="16.0">
+    <HBox spacing="10" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="14.0">
         <children>
-            <Button alignment="CENTER" mnemonicParsing="false" styleClass="LogOutBtn" text="LogOut" />
-            <Label styleClass="logoText" text="TASK-NEST" />
-            <Button alignment="CENTER" mnemonicParsing="false" onAction="#navigateToAddTask" styleClass="LogOutBtn" text="+ New Task" />
+
+            <!-- LogOut Button (left) -->
+            <Button mnemonicParsing="false" onAction="#logOut" text="LogOut">
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+                <styleClass>
+                    <String fx:value="topBtn" />
+                    <String fx:value="logOutBtn" />
+                </styleClass>
+            </Button>
+
+            <!-- Left Spacer -->
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- Center Logo -->
+            <VBox alignment="CENTER" spacing="5">
+                <children>
+                    <ImageView fitHeight="50.0" fitWidth="50.0" preserveRatio="true">
+                        <image>
+                            <Image url="@../../Images/cactus2.png" />
+                        </image>
+                    </ImageView>
+                    <Label styleClass="logoText" text="TASK 🌵 NEST" />
+                </children>
+            </VBox>
+
+            <!-- Right Spacer -->
+            <Region HBox.hgrow="ALWAYS" />
+
         </children>
     </HBox>
 
     <!-- Filter ComboBox -->
-    <HBox alignment="CENTER_RIGHT" spacing="10" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="72.0">
-        <children>
-            <ComboBox fx:id="filterBtn" prefHeight="27.0" prefWidth="89.0" promptText="All" styleClass="filterBtn" />
-        </children>
-    </HBox>
+    <HBox alignment="CENTER_RIGHT" spacing="10" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="60.0" />
 
     <!-- TableView Container -->
-    <StackPane layoutX="-10.0" prefHeight="400.0" prefWidth="571.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="150.0">
-        <TableView fx:id="tableView" editable="true" styleClass="tableView">
-            <columns>
-                <TableColumn fx:id="markColumn" text="Mark">
-                    <styleClass>
-                        <String fx:value="Title" />
-                        <String fx:value="topLabel" />
-                    </styleClass>
-                </TableColumn>
-                <TableColumn fx:id="TitleColumn" text="Title">
+    <VBox alignment="BOTTOM_CENTER" layoutX="1.3333333333333333" layoutY="195.0" prefHeight="423.0" prefWidth="989.0" spacing="10" AnchorPane.bottomAnchor="82.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="195.0">
+        <children>
+            <StackPane style="-fx-background-color: white; -fx-padding: 10; -fx-background-radius: 10;">
+                <TableView fx:id="tableView" editable="true" styleClass="tableView">
+                    <columns>
+                        <TableColumn fx:id="markColumn" text="Mark">
+                            <styleClass>
+                                <String fx:value="topLabel" />
+                            </styleClass>
+                        </TableColumn>
+                        <TableColumn fx:id="TitleColumn" text="Title">
+                            <styleClass>
+                                <String fx:value="topLabel" />
+                            </styleClass>
+                        </TableColumn>
+                        <TableColumn fx:id="StatusColumn" text="Status">
+                            <styleClass>
+                                <String fx:value="topLabel" />
+                            </styleClass>
+                        </TableColumn>
+                        <TableColumn fx:id="dueDateColumn" text="Due Date">
+                            <styleClass>
+                                <String fx:value="topLabel" />
+                            </styleClass>
+                        </TableColumn>
+                        <TableColumn fx:id="actionColumn" text="Actions">
+                            <styleClass>
+                                <String fx:value="topLabel" />
+                            </styleClass>
+                        </TableColumn>
+                    </columns>
+                </TableView>
+            </StackPane>
+        </children>
+    </VBox>
+    <HBox alignment="CENTER" layoutX="20.0" layoutY="60.0" prefHeight="81.0" prefWidth="980.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0">
+        <children>
+            <Region prefWidth="820.0" HBox.hgrow="ALWAYS" />
+        </children>
+    </HBox>
+    <HBox alignment="CENTER" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="145.0">
+        <children>
+            <ComboBox fx:id="filterBtn" prefHeight="30" promptText="All" styleClass="filterBtn">
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+            </ComboBox>
 
-                    <styleClass>
-                        <String fx:value="Title" />
-                        <String fx:value="topLabel" />
-                    </styleClass>
-                </TableColumn>
-                <TableColumn fx:id="StatusColumn" text="Status">
-                    <styleClass>
-                        <String fx:value="Status" />
-                        <String fx:value="topLabel" />
-                    </styleClass>
-                </TableColumn>
-                <TableColumn fx:id="dueDateColumn" text="Due Date">
-                    <styleClass>
-                        <String fx:value="Duedate" />
-                        <String fx:value="topLabel" />
-                    </styleClass>
-                </TableColumn>
-                <TableColumn fx:id="actionColumn" text="Actions">
-                    <styleClass>
-                        <String fx:value="topLabel" />
-                    </styleClass>
-                </TableColumn>
-            </columns>
-        </TableView>
-    </StackPane>
+            <!-- Expanding region to push the Button to the right -->
+            <Region HBox.hgrow="ALWAYS" />
 
+            <Button mnemonicParsing="false" onAction="#navigateToAddTask" styleClass="topBtn" text="+ New Task">
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+            </Button>
+        </children>
+    </HBox>
 
 
 </AnchorPane>

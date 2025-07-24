@@ -1,9 +1,12 @@
 package allTasks.controller;
 
 import EditPage.controller.editpage;
+import addTaskPage.controller.addTask;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
@@ -24,6 +27,7 @@ import java.util.Objects;
 
 public class allTasks {
 
+    public Button logOut;
     @FXML
     private TableView<ToDoItem> tableView;
     @FXML
@@ -38,6 +42,17 @@ public class allTasks {
     private ComboBox<String> filterBtn;
     @FXML
     public TableColumn<ToDoItem, Boolean> markColumn;
+
+    private FilteredList<ToDoItem> filteredList;
+
+
+    private int userId;
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+        System.out.println("User ID set to: " + userId);
+        loadTasksFromDB();
+    }
 
     private final ObservableList<ToDoItem> taskList = FXCollections.observableArrayList();
 
@@ -56,20 +71,23 @@ public class allTasks {
         dueDateColumn.setCellValueFactory(new PropertyValueFactory<>("dueDate"));
         markColumn.setCellValueFactory(cellData -> cellData.getValue().markedProperty());
 
-        markColumn.setCellFactory(tc -> {
+        markColumn.setCellFactory(column -> {
             CheckBoxTableCell<ToDoItem, Boolean> cell = new CheckBoxTableCell<>(index -> {
-                BooleanProperty prop = tableView.getItems().get(index).markedProperty();
-                prop.removeListener((obs, oldVal, newVal) -> {
-                });
-                prop.addListener((obs, wasMarked, isNowMarked) -> {
-                    ToDoItem item = tableView.getItems().get(index);
-                    item.setStatus(isNowMarked ? "Completed" : "Pending");
-                    filterTasks(isNowMarked ? "Completed" : "Pending");
-                    updateTaskMarkedInDB(item.getId(), isNowMarked);
+                if (index >= tableView.getItems().size()) return new SimpleBooleanProperty(false);
+
+                ToDoItem task = tableView.getItems().get(index);
+                BooleanProperty prop = task.markedProperty();
+
+                prop.addListener((obs, oldVal, newVal) -> {
+                    task.setStatus(newVal ? "Completed" : "Pending");
+                    updateTaskMarkedInDB(task.getId(), newVal);
+                    filterTasks(filterBtn.getValue() == null ? "All" : filterBtn.getValue());
                     tableView.refresh();
                 });
+
                 return prop;
             });
+
             cell.setAlignment(Pos.CENTER);
             return cell;
         });
@@ -78,17 +96,17 @@ public class allTasks {
         filterBtn.setOnAction(e -> filterTasks(filterBtn.getValue()));
 
         setupActionColumn();
-        loadTasksFromDB();
     }
 
     private void updateTaskMarkedInDB(int taskId, boolean marked) {
-        String sql = "UPDATE tasks SET status = ? WHERE taskId = ?";
+        String sql = "UPDATE tasks SET status = ? WHERE taskId = ? AND userId = ?";
         String status = marked ? "Completed" : "Pending";
 
         try (Connection conn = connectDB();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, status);
             stmt.setInt(2, taskId);
+            stmt.setInt(3, userId);
             stmt.executeUpdate();
         } catch (Exception e) {
             System.out.println("❌ Failed to update task status in DB: " + e.getMessage());
@@ -96,8 +114,10 @@ public class allTasks {
     }
 
     private void loadTasksFromDB() {
+        System.out.println(userId);
         try (Connection conn = connectDB();
-             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM tasks WHERE userId = 1")) {
+             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM tasks WHERE userId = ?")) {
+            stmt.setInt(1, userId);
             ResultSet rs = stmt.executeQuery();
             taskList.clear();
             while (rs.next()) {
@@ -106,11 +126,14 @@ public class allTasks {
                 String status = rs.getString("status");
                 String description = rs.getString("description");
                 String dueDate = rs.getString("dueDate");
-                ToDoItem task = new ToDoItem(id, title, status, description, dueDate);
+                ToDoItem task = new ToDoItem(id, userId, title, status, description, dueDate);
                 task.setMarked("Completed".equalsIgnoreCase(status));
                 taskList.add(task);
             }
-            tableView.setItems(taskList);
+            filteredList = new FilteredList<>(taskList, task -> true);
+            tableView.setItems(filteredList);
+
+            filterTasks(filterBtn.getValue() == null ? "All" : filterBtn.getValue());
 
             tableView.setRowFactory(tv -> new TableRow<>() {
                 @Override
@@ -134,22 +157,16 @@ public class allTasks {
     }
 
     private void filterTasks(String filter) {
-        ObservableList<ToDoItem> filtered = FXCollections.observableArrayList();
-        for (ToDoItem task : taskList) {
-            switch (filter) {
-                case "Completed" -> {
-                    if (task.getStatus().equalsIgnoreCase("Completed")) filtered.add(task);
-                }
-                case "Pending" -> {
-                    if (task.getStatus().equalsIgnoreCase("Pending")) filtered.add(task);
-                }
-                case "Overdue" -> {
-                    if (isOverdue(task) && task.getStatus().equalsIgnoreCase("Pending")) filtered.add(task);
-                }
-                default -> filtered.add(task);
-            }
-        }
-        tableView.setItems(filtered);
+        if (filteredList == null) return;
+
+        filteredList.setPredicate(task -> {
+            return switch (filter) {
+                case "Completed" -> task.getStatus().equalsIgnoreCase("Completed");
+                case "Pending" -> task.getStatus().equalsIgnoreCase("Pending");
+                case "Overdue" -> isOverdue(task) && task.getStatus().equalsIgnoreCase("Pending");
+                default -> true;
+            };
+        });
     }
 
 
@@ -164,40 +181,40 @@ public class allTasks {
 
     private void setupActionColumn() {
         actionColumn.setCellFactory(column -> new TableCell<>() {
-            private final Button editIcon = createIconButton("/Images/pen-to-square-solid.png");
-            private final Button deleteIcon = createIconButton("/Images/trash-solid.png");
-            private final HBox container = new HBox(8, editIcon, deleteIcon);
-
-            {
-                container.setAlignment(Pos.CENTER);
-                editIcon.setCursor(javafx.scene.Cursor.HAND);
-                editIcon.setTooltip(new Tooltip("Edit Task"));
-                deleteIcon.setTooltip(new Tooltip("Delete Task"));
-                deleteIcon.setCursor(javafx.scene.Cursor.HAND);
-
-                deleteIcon.setOnMouseClicked(e -> {
-                    ToDoItem task = getTableView().getItems().get(getIndex());
-                    deleteTask(task);
-                });
-                editIcon.setOnMouseClicked(e -> {
-                    ToDoItem task = getTableView().getItems().get(getIndex());
-                    try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/EditPage/view/EDITPAGE.fxml"));
-                        Parent editRoot = loader.load();
-                        editpage controller = loader.getController();
-                        controller.setTaskData(task);
-                        Scene scene = ((Node) e.getSource()).getScene();
-                        scene.setRoot(editRoot);
-                    } catch (IOException ex) {
-                        System.out.println("❌ Failed to open edit page: " + ex.getMessage());
-                    }
-                });
-            }
-
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
-                setGraphic(empty ? null : container);
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    Button editIcon = createIconButton("/Images/pen-to-square-solid.png");
+                    Button deleteIcon = createIconButton("/Images/trash-solid.png");
+                    HBox container = new HBox(8, editIcon, deleteIcon);
+                    container.setAlignment(Pos.CENTER);
+
+                    ToDoItem task = (ToDoItem) getTableRow().getItem();
+
+                    editIcon.setCursor(javafx.scene.Cursor.HAND);
+                    editIcon.setTooltip(new Tooltip("Edit Task"));
+                    deleteIcon.setTooltip(new Tooltip("Delete Task"));
+                    deleteIcon.setCursor(javafx.scene.Cursor.HAND);
+
+                    deleteIcon.setOnMouseClicked(e -> deleteTask(task));
+                    editIcon.setOnMouseClicked(e -> {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/EditPage/view/EDITPAGE.fxml"));
+                            Parent editRoot = loader.load();
+                            editpage controller = loader.getController();
+                            controller.setTaskData(task);
+                            Scene scene = ((Node) e.getSource()).getScene();
+                            scene.setRoot(editRoot);
+                        } catch (IOException ex) {
+                            System.out.println("❌ Failed to open edit page: " + ex.getMessage());
+                        }
+                    });
+
+                    setGraphic(container);
+                }
             }
         });
     }
@@ -208,7 +225,7 @@ public class allTasks {
             stmt.setInt(1, task.getId());
             stmt.executeUpdate();
             taskList.remove(task);
-            tableView.setItems(FXCollections.observableArrayList(taskList));
+            filterTasks(filterBtn.getValue() == null ? "All" : filterBtn.getValue());
         } catch (Exception e) {
             System.out.println("❌ Error deleting task: " + e.getMessage());
         }
@@ -227,21 +244,37 @@ public class allTasks {
 
     @FXML
     public void navigateToAddTask(javafx.event.ActionEvent event) throws IOException {
-        Parent addTaskRoot = FXMLLoader.load(getClass().getResource("/addTaskPage/view/addTask.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/addTaskPage/view/addTask.fxml"));
+        Parent addTaskRoot = loader.load();
+        addTask controller = loader.getController();
+        controller.setUserId(userId);
         Scene scene = ((Node) event.getSource()).getScene();
         scene.setRoot(addTaskRoot);
     }
 
+    @FXML
+    public void logOut(ActionEvent event) throws IOException {
+        userId = 0;
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/landingPage/view/landingPage.fxml"));
+        Parent LandingPage = loader.load();
+
+        Scene scene = ((Node) event.getSource()).getScene();
+        scene.setRoot(LandingPage);
+    }
+
+
     public static class ToDoItem {
-        private final int id;
+        private int id;
+        private int userId;
         private final SimpleStringProperty task = new SimpleStringProperty();
         private final SimpleStringProperty status = new SimpleStringProperty();
         private final SimpleStringProperty description = new SimpleStringProperty();
         private final SimpleStringProperty dueDate = new SimpleStringProperty();
         private final SimpleBooleanProperty marked = new SimpleBooleanProperty(false);
 
-        public ToDoItem(int id, String task, String status, String description, String dueDate) {
+        public ToDoItem(int id, int userId, String task, String status, String description, String dueDate) {
             this.id = id;
+            this.userId = userId;
             this.task.set(task);
             this.status.set(status);
             this.description.set(description);
@@ -250,6 +283,18 @@ public class allTasks {
 
         public int getId() {
             return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getUserId() {
+            return userId;
+        }
+
+        public void setUserId(int userId) {
+            this.userId = userId;
         }
 
         public String getTask() {

@@ -1,5 +1,6 @@
 package LoginPage.controller;
 
+import allTasks.controller.allTasks;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.TranslateTransition;
@@ -33,8 +34,6 @@ public class loginController implements Initializable {
     public PasswordField passwordField;
     @FXML
     public CheckBox rememberMe;
-    @FXML
-    public Hyperlink forgotLink;
     @FXML
     public AnchorPane rootPane;
 
@@ -90,8 +89,8 @@ public class loginController implements Initializable {
 
 
     @FXML
-    private void handleLogin() {
-        String userInput= usernameField.getText();
+    private void handleLogin(ActionEvent event) {
+        String userInput = usernameField.getText();
         String passInput = passwordField.getText();
 
         try {
@@ -116,6 +115,22 @@ public class loginController implements Initializable {
             if (resultSet.next()) {
                 System.out.println("Login successful!");
                 showAlert(Alert.AlertType.INFORMATION, "Login successful!");
+                // Redirect to All Tasks page
+                // Redirect to All Tasks page and pass userId
+                int userId = resultSet.getInt("userId");
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/allTasks/view/allTasks.fxml"));
+                    Parent allTasksRoot = loader.load();
+                    allTasks controller = loader.getController();
+                    controller.setUserId(userId);
+                    Scene scene = ((Node) event.getSource()).getScene();
+                    scene.setRoot(allTasksRoot);
+                } catch (IOException e) {
+                    showAlert(Alert.AlertType.ERROR, "Failed to load All Tasks page.");
+                    e.printStackTrace();
+                    return;
+                }
+
             } else {
                 showAlert(Alert.AlertType.ERROR, "Invalid Username or Password.");
             }
@@ -128,10 +143,38 @@ public class loginController implements Initializable {
 
     }
 
+    @FXML
+    public void continueAsGuest(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/allTasks/view/allTasks.fxml"));
+            Parent allTasksRoot = loader.load();
+            allTasks controller = loader.getController();
+            controller.setUserId(0);
+            Scene scene = ((Node) event.getSource()).getScene();
+            scene.setRoot(allTasksRoot);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Failed to load All Tasks page.");
+            e.printStackTrace();
+            return;
+        }
+    }
+
+
     public void handleSignUp(ActionEvent event) throws IOException {
         Parent signUpRoot = FXMLLoader.load(getClass().getResource("/SignUpPage/view/signup.fxml"));
         Scene scene = ((Node) event.getSource()).getScene();
         scene.setRoot(signUpRoot);
+    }
+
+    public void goToPreviewPage(ActionEvent actionEvent) {
+        try {
+            Parent previewRoot = FXMLLoader.load(getClass().getResource("/LandingPage/view/landingPage.fxml"));
+            Scene scene = ((Node) actionEvent.getSource()).getScene();
+            scene.setRoot(previewRoot);
+        } catch (IOException e) {
+            showAlert(Alert.AlertType.ERROR, "Failed to load Preview page.");
+            e.printStackTrace();
+        }
     }
 
 

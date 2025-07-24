@@ -1,0 +1,48 @@
+.main-background{
+    -fx-background-color:  linear-gradient(to bottom, #f0ffe1, #c4f0b2);
+    -fx-padding: 30px;
+}
+
+.text-field{
+-fx-padding: 20;
+-fx-font-size: 16px;
+}
+
+.topBtn {
+    -fx-background-color: #2a7f3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+    -fx-background-radius: 10;
+}
+
+.topBtn:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-background-color: #256b34;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 6, 0, 0, 3);
+}
+
+.backToPreview {
+     -fx-background-color: #2a7f3c;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 10;
+    -fx-background-radius: 10;
+}
+
+.backToPreview:hover {
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-background-color: #5abf85;
+}
+
+.login-button{
+    -fx-padding: 10 20;
+}
+
+.logoText {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2a7f3c;
+}
