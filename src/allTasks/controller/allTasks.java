@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Optional;
 
 public class allTasks {
 
@@ -222,10 +223,23 @@ public class allTasks {
     private void deleteTask(ToDoItem task) {
         try (Connection conn = connectDB();
              PreparedStatement stmt = conn.prepareStatement("DELETE FROM tasks WHERE taskId = ?")) {
-            stmt.setInt(1, task.getId());
-            stmt.executeUpdate();
-            taskList.remove(task);
-            filterTasks(filterBtn.getValue() == null ? "All" : filterBtn.getValue());
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm Deletion");
+            alert.setHeaderText("Are sure you want to delete this task?");
+            alert.setContentText("This action cannot be undone");
+
+            Optional<ButtonType> result = alert.showAndWait();
+
+            if(result.isPresent() && result.get() == ButtonType.OK){
+                stmt.setInt(1, task.getId());
+                stmt.executeUpdate();
+                taskList.remove(task);
+                filterTasks(filterBtn.getValue() == null ? "All" : filterBtn.getValue());
+            }else {
+                System.out.println("Deletion cancelled");
+            }
+
+
         } catch (Exception e) {
             System.out.println("❌ Error deleting task: " + e.getMessage());
         }
